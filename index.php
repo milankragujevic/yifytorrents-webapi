@@ -42,11 +42,12 @@ foreach($yts['data']['movies'] as $item) {
 	$tmdb_find = _cg('https://api.themoviedb.org/3/find/' . $imdbID . '?api_key=' . $tmdb_key . '&language=en-US&external_source=imdb_id');
 	$tmdb = $tmdb_find['movie_results'][0];
 	$movies[] = array(
+		'imdb_id' => $imdbID,
 		'title' => $tmdb['title'],
 		'year' => $item['year'],
 		'released_date' => date('F jS, Y', strtotime($tmdb['release_date'])),
 		'background' => 'https://image.tmdb.org/t/p/original' . $tmdb['backdrop_path'],
-		'poster' => 'https://image.tmdb.org/t/p/w300' . $item['poster_path'],
+		'poster' => 'https://image.tmdb.org/t/p/w300' . $tmdb['poster_path'],
 		'genres' => implode(', ', $item['genres']),
 		'rating' => $item['rating'],
 		'runtime' => $item['runtime'] . ' mins',
