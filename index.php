@@ -49,6 +49,8 @@ foreach($yts['data']['movies'] as $item) {
 		'background' => 'https://image.tmdb.org/t/p/original' . $tmdb['backdrop_path'],
 		'poster' => 'https://image.tmdb.org/t/p/w300' . $tmdb['poster_path'],
 		'genres' => implode(', ', $item['genres']),
+		'plot' => $item['summary'],
+		'trailer' => $item['yt_trailer_code'],
 		'rating' => $item['rating'],
 		'runtime' => $item['runtime'] . ' mins',
 		'quality' => '720p',
