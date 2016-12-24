@@ -1,8 +1,8 @@
 <?php
-function _cg($url) {
+function _cg($url, $cft = 3600) {
 	if(!is_dir(__DIR__ . '/cache/')) { mkdir(__DIR__ . '/cache/'); }
 	$cache = __DIR__ . '/cache/' . sha1($url) . '.json';
-	if(!is_file($cache) || time() - filemtime($cache) > 60 * 60) {
+	if(!is_file($cache) || ($cft && (time() - filemtime($cache) > $cft))) {
 	  file_put_contents($cache, file_get_contents($url));
 	}
 	$api = json_decode(file_get_contents($cache), true);	
@@ -39,7 +39,7 @@ $movies = [];
 foreach($yts['data']['movies'] as $item) {
 	$torrent = []; foreach($item['torrents'] as $_t) { if($_t['quality'] == '720p') { $torrent = $_t; } }
 	$imdbID = $item['imdb_code'];
-	$tmdb_find = _cg('https://api.themoviedb.org/3/find/' . $imdbID . '?api_key=' . $tmdb_key . '&language=en-US&external_source=imdb_id');
+	$tmdb_find = _cg('https://api.themoviedb.org/3/find/' . $imdbID . '?api_key=' . $tmdb_key . '&language=en-US&external_source=imdb_id', false);
 	$tmdb = $tmdb_find['movie_results'][0];
 	$movies[] = array(
 		'imdb_id' => $imdbID,
