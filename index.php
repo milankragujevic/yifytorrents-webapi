@@ -1,4 +1,16 @@
 <?php
+function _cg($url) {
+	if(!is_dir(__DIR__ . '/cache/')) { mkdir(__DIR__ . '/cache/'); }
+	$cache = __DIR__ . '/cache/' . sha1($url) . '.json';
+	if(!is_file($cache) || time() - filemtime($cache) > 60 * 60) {
+	  file_put_contents($cache, file_get_contents($url));
+	}
+	$api = json_decode(file_get_contents($cache), true);	
+	return $api;
+}
+
+$tmdb_key = 'd763549ca4b13a17f5ef6ff914033fad';
+
 set_time_limit(0);
 error_reporting(0);
 $page = (int)$_GET['page'];
@@ -22,16 +34,14 @@ if(isset($_GET['sort_order'])) {
 }
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-if(!is_dir(__DIR__ . '/cache/')) { mkdir(__DIR__ . '/cache/'); }
-$url = 'https://yts.ag/api/v2/list_movies.json?limit=' . $limit . '&quality=720p&sort_by=' . $sort_by . '&order_by=' . $sort_order . '&query_term=' . urlencode($query) . '&genre=' . urlencode($genre) . '&page=' . $page;
-$cache = __DIR__ . '/cache/' . sha1($url) . '.json';
-if(!is_file($cache) || time() - filemtime($cache) > 60 * 60) {
-  file_put_contents($cache, file_get_contents($url));
-}
-$yts = json_decode(file_get_contents($cache), true);
+$yts = _cg('https://yts.ag/api/v2/list_movies.json?limit=' . $limit . '&quality=720p&sort_by=' . $sort_by . '&order_by=' . $sort_order . '&query_term=' . urlencode($query) . '&genre=' . urlencode($genre) . '&page=' . $page);
 $movies = [];
 foreach($yts['data']['movies'] as $item) {
 	$torrent = []; foreach($item['torrents'] as $_t) { if($_t['quality'] == '720p') { $torrent = $_t; } }
+	$imdbID = $item['imdb_code'];
+	$tmdb_find = _cg('https://api.themoviedb.org/3/find/' . $imdbID . '?api_key=' . $tmdb_key . '&language=en-US&external_source=imdb_id');
+	print_r($tmdb_find); exit;
+	exit;
 	$movies[] = [
 		'title' => $item['title'],
 		'year' => $item['year'],
