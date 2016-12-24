@@ -10,7 +10,7 @@ if($page < 1) { $page = 1; }
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 if(!is_dir(__DIR__ . '/cache/')) { mkdir(__DIR__ . '/cache/'); }
-$url = 'https://yts.to/api/v2/list_movies.json?limit=25&quality=720p&sort_by=seeds&order_by=desc&query_term=' . urlencode($query) . '&genre=' . urlencode($genre) . '&page=' . $page;
+$url = 'https://yts.ag/api/v2/list_movies.json?limit=25&quality=720p&sort_by=seeds&order_by=desc&query_term=' . urlencode($query) . '&genre=' . urlencode($genre) . '&page=' . $page;
 $cache = __DIR__ . '/cache/' . sha1($url) . '.json';
 if(!is_file($cache) || time() - filemtime($cache) > 60 * 60) {
   file_put_contents($cache, file_get_contents($url));
