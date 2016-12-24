@@ -9,34 +9,6 @@ function _cg($url) {
 	return $api;
 }
 
-/*Array
-(
-    [movie_results] => Array
-        (
-            [0] => Array
-                (
-                    [adult] => 
-                    [backdrop_path] => /geaAzUv09q5KaM9fHW74nIHeOCi.jpg
-                    [genre_ids] => Array
-                        (
-                            [0] => 35
-                        )
-
-                    [id] => 369883
-                    [original_language] => en
-                    [original_title] => Middle School: The Worst Years of My Life
-                    [overview] => A quiet teenage artist Rafe Katchadorian has a wild imagination and is sick of middle school and the rules that have been put before him. Rafe and his best friend Leo have come up with a plan: break every rule in the school hand book and as you expect trouble follows.
-                    [release_date] => 2016-10-07
-                    [poster_path] => /4ivn2Ze0kWpFNXgow2itfkdQftT.jpg
-                    [popularity] => 1.960159
-                    [title] => Middle School: The Worst Years of My Life
-                    [video] => 
-                    [vote_average] => 5.5
-                    [vote_count] => 6
-                )
-
-        )*/
-
 $tmdb_key = 'd763549ca4b13a17f5ef6ff914033fad';
 
 set_time_limit(0);
@@ -72,7 +44,7 @@ foreach($yts['data']['movies'] as $item) {
 	$movies[] = array(
 		'title' => $tmdb['title'],
 		'year' => $item['year'],
-		'released_date' => date('F jS, Y', strtotime(
+		'released_date' => date('F jS, Y', strtotime($tmdb['release_date'])),
 		'background' => 'https://image.tmdb.org/t/p/original' . $tmdb['backdrop_path'],
 		'poster' => 'https://image.tmdb.org/t/p/w300' . $item['poster_path'],
 		'genres' => implode(', ', $item['genres']),
