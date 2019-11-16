@@ -34,7 +34,7 @@ if(isset($_GET['sort_order'])) {
 }
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-$yts = _cg('https://yts.ag/api/v2/list_movies.json?limit=' . $limit . '&quality=720p&sort_by=' . $sort_by . '&order_by=' . $sort_order . '&query_term=' . urlencode($query) . '&genre=' . urlencode($genre) . '&page=' . $page);
+$yts = _cg('https://yts.lt/api/v2/list_movies.json?limit=' . $limit . '&quality=720p&sort_by=' . $sort_by . '&order_by=' . $sort_order . '&query_term=' . urlencode($query) . '&genre=' . urlencode($genre) . '&page=' . $page);
 $movies = [];
 foreach($yts['data']['movies'] as $item) {
 	$torrent = []; foreach($item['torrents'] as $_t) { if($_t['quality'] == '720p') { $torrent = $_t; } }
